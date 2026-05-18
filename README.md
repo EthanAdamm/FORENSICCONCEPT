@@ -1,2 +1,2 @@
 # FORENSICCONCEPT: Transferable Forensic Concepts for AIGI Detection
-[ICML2026]The official implementation of FORENSICCONCEPT in PyTorch.
+Welcome you to the official repository for our method presented in "FORENSICCONCEPT: Transferable Forensic Concepts for AIGI Detection."
