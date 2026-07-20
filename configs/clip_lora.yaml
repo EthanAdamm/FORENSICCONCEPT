@@ -1,0 +1,68 @@
+# Stage 1: train the CLIP ViT-L/14 classifier and visual qkv LoRA adapters.
+data:
+  train_dataroot: "./datasets"
+  train_split: "train"
+  test_dataroot: "./datasets/test"
+  val_split: "val"
+
+models:
+  checkpoints_dir: "./checkpoints"
+  pretrained:
+    clip_model: "./weights/backbones/ViT-L-14.pt"
+
+training:
+  trainmode: "lora"
+  modelname: "CLIP:ViT-L/14"
+  clip_use_main_head: true
+  clip_train_fc: true
+  clip_train_lora: true
+  clip_lora_rank: 4
+  clip_lora_alpha: 8
+  clip_freeze_backbone: true
+  clip_load_init_weights: true
+  clip_use_codebook_inject: false
+
+  num_classes: 1
+  legacy_preprocess: true
+  optim: "adam"
+  beta1: 0.9
+  weight_decay: 0.0
+  lr: 0.00002
+  lr_decay_factor: 0.9
+  lr_min: 0.000001
+  batch_size: 32
+  niter: 98
+  delr_freq: 10
+  loss_freq: 100
+
+  data_aug: true
+  loadSize: 224
+  cropSize: 224
+  class_bal: false
+  serial_batches: false
+
+  seed: 100
+  gpu_ids: "0"
+  name: "clip_vitl14_lora_stage1"
+  initial_eval: true
+  continue_train: false
+  epoch: "latest"
+  save_last_checkpoint: true
+
+testing:
+  batch_size: 64
+  data_aug: false
+  no_resize: false
+  no_crop: false
+  groups:
+    - name: "example_test"
+      path: "./datasets/test/example"
+      mode: "single"
+
+logging:
+  tensorboard: true
+  log_file: "training.log"
+  print_options: true
+
+system:
+  num_threads: 8

@@ -1,0 +1,76 @@
+# Reproduction template. Replace dataset and weight paths before running.
+data:
+  train_dataroot: "./datasets"
+  train_split: "train"
+  test_dataroot: "./datasets/test"
+  val_split: "val"
+
+models:
+  checkpoints_dir: "./checkpoints"
+
+training:
+  trainmode: "dinov3"
+  dinov3_variant: "vitl16"
+  dinov3_backend: "official"
+  dinov3_repo_path: "./external/dinov3"
+  dinov3_weights: "./weights/backbones/dinov3-vitl16/model.safetensors"
+  dinov3_accel_backend: "none"
+
+  freeze_backbone: true
+  trainable_blocks: 0
+  head_hidden_dim: 512
+  head_dropout: 0.2
+  use_lora: true
+  lora_rank: 4
+  lora_alpha: 8
+  lora_dropout: 0.0
+  lora_bias: "none"
+  lora_target_modules: []
+  lora_target_last_n:
+
+  num_classes: 1
+  optim: "adam"
+  beta1: 0.9
+  weight_decay: 0.0
+  lr: 0.0001
+  lr_decay_factor: 0.9
+  lr_min: 0.000001
+  batch_size: 32
+  niter: 10
+  delr_freq: 5
+  loss_freq: 100
+
+  data_aug: true
+  no_resize: false
+  no_flip: false
+  loadSize: 224
+  cropSize: 224
+  class_bal: false
+  serial_batches: false
+
+  seed: 100
+  gpu_ids: "0"
+  name: "dinov3_vitl16_lora_stage1"
+  initial_eval: false
+  continue_train: false
+  epoch: "latest"
+  save_last_checkpoint: true
+
+testing:
+  batch_size: 64
+  data_aug: false
+  no_resize: false
+  no_crop: false
+  groups:
+    - name: "example_test"
+      path: "./datasets/test/example"
+      mode: "single"
+
+logging:
+  tensorboard: true
+  log_file: "training.log"
+  print_options: true
+
+system:
+  num_threads: 8
+  ddp_timeout_minutes: 180

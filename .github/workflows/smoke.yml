@@ -1,0 +1,24 @@
+name: Release smoke tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install lightweight test dependencies
+        run: python3 -m pip install numpy PyYAML
+      - name: Compile Python sources
+        run: python3 -m compileall -q .
+      - name: Validate public configs and codebook
+        run: |
+          python3 tests/test_release_smoke.py \
+            ReleaseSmokeTests.test_project_license_is_present \
+            ReleaseSmokeTests.test_public_configs_load \
+            ReleaseSmokeTests.test_released_codebook
