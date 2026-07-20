@@ -16,7 +16,8 @@ from config_loader import ConfigLoader  # noqa: E402
 class ReleaseSmokeTests(unittest.TestCase):
     def test_project_license_is_present(self):
         license_text = (RELEASE_ROOT / "LICENSE").read_text(encoding="utf-8")
-        self.assertIn("MIT License", license_text)
+        self.assertIn("Apache License", license_text)
+        self.assertIn("Version 2.0", license_text)
         self.assertIn("ForensicConcept Authors", license_text)
 
     def test_public_configs_load(self):
