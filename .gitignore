@@ -10,6 +10,7 @@ __pycache__/
 
 checkpoints/
 checkpoints_new/
+weights/
 logs/
 output/
 outputs/

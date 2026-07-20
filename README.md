@@ -99,7 +99,33 @@ The integration was tested with DINOv3 package version `0.0.1`. You may use anot
 
 ## Weights
 
-The detector checkpoints and pretrained backbones are released separately. Place them as follows:
+Our compact detector checkpoints are hosted in the
+[ForensicConcept model repository](https://huggingface.co/ethan225/ForensicConcept).
+Download them into the cloned code repository with:
+
+```bash
+hf download ethan225/ForensicConcept \
+  --include "weights/**" \
+  --local-dir .
+```
+
+The released files have the following verified sizes:
+
+| Checkpoint | Purpose | Size |
+|---|---|---:|
+| `dinov3_vitl16_lora_stage1.pth` | DINOv3 ADT / LoRA initialization | 24.3 MiB (25,449,011 bytes) |
+| `dinov3_vitl16_concept_stage2.pth` | DINOv3 ForensicConcept inference | 26.6 MiB (27,921,351 bytes) |
+| `clip_vitl14_lora_stage1.pth` | CLIP LoRA initialization | 4.6 MiB (4,791,439 bytes) |
+| `clip_vitl14_codebook_stage2.pth` | CLIP CGCI inference | 20.5 MiB (21,547,156 bytes) |
+| `dinov3_concept_matrix.npy` | DINOv3 concept initialization (`200 x 1024`, float32) | 0.8 MiB (819,328 bytes) |
+
+The four checkpoints total **76.0 MiB**. DINOv3 inference requires its stage-2
+checkpoint and concept matrix; CLIP inference requires only its stage-2
+checkpoint because the codebook is stored in the checkpoint and also released
+under `assets/codebooks/`. Stage-1 checkpoints are provided for reproducing
+stage-2 training.
+
+After downloading our weights, add the external pretrained backbones:
 
 ```text
 weights/
